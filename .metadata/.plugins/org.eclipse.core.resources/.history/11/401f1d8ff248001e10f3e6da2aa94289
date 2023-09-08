@@ -1,0 +1,6 @@
+package com.example.demo.constants;
+
+public class CarWashConstants {
+
+	public static final String SOMETHING_WENT_WRONG="Something went wrong";
+}

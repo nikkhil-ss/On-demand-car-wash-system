@@ -1,7 +1,0 @@
-package com.example.demo.restImpl;
-
-import com.example.demo.rest.UserRest;
-
-public class UserRestImpl implements UserRest {
-
-}

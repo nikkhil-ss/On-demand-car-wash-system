@@ -11,10 +11,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.example.demo.wrapper.UserWrapper;
 
-@RequestMapping(path="/user")
+@RequestMapping(path="/api/auth")
 public interface UserRest {
 	
-		@PostMapping("/signup")
+		@PostMapping("/register")
 		public ResponseEntity<String> signup(@RequestBody(required=true) Map<String,String> requestMap);
 		
 		@PostMapping("/login")

@@ -23,7 +23,7 @@ import com.example.demo.repository.OrderRepo;
 
 @RestController
 @RequestMapping("/orders")
-//@CrossOrigin("http://localhost:4200")
+
 public class OrderController {
     @Autowired
     private OrderRepo orderRepo;
@@ -35,22 +35,26 @@ public class OrderController {
     }
     //Find one object by ID
     @GetMapping("/findone/{orderid}")
-    public ResponseEntity<OrderDetails> findoneOrder(@PathVariable String orderid){
+    public ResponseEntity<OrderDetails> findoneOrder(@PathVariable String orderid) throws API_requestException{
          OrderDetails order=orderRepo.findById(orderid).orElseThrow(()-> new API_requestException("Order with ID -> "+orderid+" not found"));
          return ResponseEntity.ok(order);
     }
     //To add an order
     @PostMapping("/add")
     public OrderDetails addOrder(@RequestBody OrderDetails order) {
-        //Every Order at conception will be [Pending] and [Unassigned]
+        //Every Order at conception will be [Pending]
         order.setStatus("Pending");
-        order.setWasherName("NA");
+        if(order.getPickUp()==false) {
+//        	order.setPickUp(false);
+        	order.setPickupAddress("NA");
+        }
+//        order.setWasherName("NA");
         return orderRepo.save(order);
     }
     //To delete specific order with id
     @DeleteMapping("/delete/{orderId}")
-    public ResponseEntity<Map<String,Boolean>> deleteOrder(@PathVariable String orderId){
-        OrderDetails order=orderRepo.findById(orderId).orElseThrow(()-> new API_requestException("Order with ID -> "+orderId+" not found,deletion failed"));
+    public ResponseEntity<Map<String,Boolean>> deleteOrder(@PathVariable String orderId) throws Exception{
+        OrderDetails order=orderRepo.findById(orderId).orElseThrow(()-> new Exception("Order with ID -> "+orderId+" not found,deletion failed"));
         orderRepo.delete(order);
         Map<String, Boolean> response = new HashMap<>();
         response.put("Order Deleted", Boolean.TRUE);
@@ -66,44 +70,37 @@ public class OrderController {
         //Status can't be updated by the user
         existingOrder.setCars(orderDetails.getCars());
         existingOrder.setUseremailid(orderDetails.getUseremailid());
-        existingOrder.setAreapincode(orderDetails.getAreapincode());
+        existingOrder.setPickUp(orderDetails.getPickUp());
+        existingOrder.setPickupAddress(orderDetails.getPickupAddress());
         existingOrder.setPhoneNo(orderDetails.getPhoneNo());
         existingOrder.setCars(orderDetails.getCars());
         OrderDetails updatedOrder=orderRepo.save(existingOrder);
         return ResponseEntity.ok(updatedOrder);
     }
 
-    /** Getting consumed by the Washer and Admin model */
+  
     //To filter orders using user emailId
     @GetMapping("/findMyOrders/{useremailid}")
     public List<OrderDetails> getMyOrders(@PathVariable String useremailid){
-        return orderRepo.findAll().stream().filter(x ->x.getUseremailid().contains(useremailid)).collect(Collectors.toList());
+        return orderRepo.findAll().stream().filter(order ->order.getUseremailid().contains(useremailid)).collect(Collectors.toList());
     }
     //To find all the completed orders
     @GetMapping("/findCompleted")
     public List<OrderDetails> getCompletedOrders(){
-         return orderRepo.findAll().stream().filter(x -> x.getStatus().contains("Completed")).collect(Collectors.toList());
+         return orderRepo.findAll().stream().filter(order -> order.getStatus().contains("Completed")).collect(Collectors.toList());
     }
     //To find all the pending orders
     @GetMapping("/findPending")
     public List<OrderDetails> getPendingOrders(){
-        return orderRepo.findAll().stream().filter(x -> x.getStatus().contains("Pending")).collect(Collectors.toList());
+        return orderRepo.findAll().stream().filter(order -> order.getStatus().contains("Pending")).collect(Collectors.toList());
     }
     //To find all the cancelled orders
     @GetMapping("/findCancelled")
     public List<OrderDetails> getCancelledOrders(){
-        return orderRepo.findAll().stream().filter(x -> x.getStatus().contains("Cancelled")).collect(Collectors.toList());
+        return orderRepo.findAll().stream().filter(order -> order.getStatus().contains("Cancelled")).collect(Collectors.toList());
     }
-    //To find all the unassigned orders
-    @GetMapping("/findUnassigned")
-    public List<OrderDetails> getUnassignedOrders(){
-        return orderRepo.findAll().stream().filter(x -> x.getWasherName().contains("NA")).collect(Collectors.toList());
-    }
-    //To fin all the orders by a specific washer
-    @GetMapping("/washerSpecficOrder/{washername}")
-    public List<OrderDetails> getWasherSpecificOrders(@PathVariable String washername){
-        return orderRepo.findAll().stream().filter(x -> x.getWasherName().contains(washername)).collect(Collectors.toList());
-    }
+  
+ 
     //To cancel the order
     @PutMapping("/cancelOrder")
     public String cancelOrder(@RequestBody OrderDetails orderDetails){
@@ -123,16 +120,5 @@ public class OrderController {
         OrderDetails order=orderRepo.save(existingOrder);
         return ResponseEntity.ok(order);
     }
-    @PutMapping("/assignWasher")
-    public OrderDetails assignWasher(@RequestBody OrderDetails od){
-        boolean doesOrderExists=orderRepo.existsById(od.getOrderId());
-        OrderDetails existingOrder = orderRepo.findById(od.getOrderId()).orElse(null);
-        if (doesOrderExists && existingOrder.getWasherName().contains("NA")){
-            existingOrder.setWasherName(od.getWasherName());
-            return orderRepo.save(existingOrder);
-        }
-        else {
-            throw new API_requestException("Order not found in database, washer not assigned");
-        }
-    }
+   
 }

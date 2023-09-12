@@ -27,7 +27,7 @@ public class WashPackService {
         return wr.findAll();
     }
     //To find one WashPack
-    public ResponseEntity<WashPacks> findoneWP(String id){
+    public ResponseEntity<WashPacks> findoneWP(String id) throws API_requestException {
         WashPacks wp=wr.findById(id).orElseThrow(() ->  new API_requestException("Washpack with ID -> "+id+" not found"));
         return ResponseEntity.ok(wp);
     }

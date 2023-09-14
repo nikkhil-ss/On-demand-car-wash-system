@@ -160,10 +160,10 @@ public class UserServiceImpl implements UserService {
 		// TODO Auto-generated method stub
 		allAdmin.remove(jwtFilter.getCurrentUser());
 		if(status!=null && status.equalsIgnoreCase("true")) {
-			emailUtils.sendSimpleMessaage(jwtFilter.getCurrentUser(), "Account Approved", "USER:- "+user + " \n is approved by \nADMIN:"+jwtFilter.getCurrentUser(), allAdmin);
+			emailUtils.sendSimpleMessaage(jwtFilter.getCurrentUser(), "Account Approved", "User:- "+user + " \n is approved by \nADMIN: "+jwtFilter.getCurrentUser(), allAdmin);
 		}
 		else {
-			emailUtils.sendSimpleMessaage(jwtFilter.getCurrentUser(), "Account Disabled", "USER:- "+user + " \n is disabled by \nADMIN:"+jwtFilter.getCurrentUser(), allAdmin);
+			emailUtils.sendSimpleMessaage(jwtFilter.getCurrentUser(), "Account Disabled", "User:- "+user + " \n is disabled by \nADMIN: "+jwtFilter.getCurrentUser(), allAdmin);
 		}
 		
 		

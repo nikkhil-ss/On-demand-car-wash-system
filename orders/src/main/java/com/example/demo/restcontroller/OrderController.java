@@ -45,10 +45,9 @@ public class OrderController {
         //Every Order at conception will be [Pending]
         order.setStatus("Pending");
         if(order.getPickUp()==false) {
-//        	order.setPickUp(false);
         	order.setPickupAddress("NA");
         }
-//        order.setWasherName("NA");
+
         return orderRepo.save(order);
     }
     //To delete specific order with id

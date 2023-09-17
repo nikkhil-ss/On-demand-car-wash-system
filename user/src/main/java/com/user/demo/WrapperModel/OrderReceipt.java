@@ -10,7 +10,9 @@ import lombok.NoArgsConstructor;
 public class OrderReceipt {
 
 	    private String orderID;
-	    private String CustomerEmail;
+	    private String customerEmail;
+	    private String washerName;
+	    private int noOfCarsWashed;
 	    private String washPackName;
 	    private String washPackDetails;
 	    private int washPackPrice;

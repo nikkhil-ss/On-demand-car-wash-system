@@ -1,92 +1,51 @@
 package com.example.demo.model;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.io.Serializable;
 
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.index.IndexDirection;
-import org.springframework.data.mongodb.core.index.Indexed;
-import org.springframework.data.mongodb.core.mapping.DBRef;
-import org.springframework.data.mongodb.core.mapping.Document;
+import javax.persistence.*;
 
-//import lombok.*;
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
+
+import lombok.Data;
+
+//@NamedQuery(name="User.findByEmailId",query="select u from User u where u.email:email")
+@NamedQuery(name = "User.getAllUser", query = "select new com.example.demo.wrapper.UserWrapper(u.id,u.name,u.email,u.contactNumber,u.status) from User u where u.role='user'")
+@NamedQuery(name="User.updateStatus", query="update User u set u.status=:status where u.id=:id")
+@NamedQuery(name = "User.getAllAdmin", query = "select u.email from User u where u.role='admin'")
 
 
 
-@Document(collection = "users")
-public class User {
+@Data
+@Entity
+@DynamicInsert
+@DynamicUpdate
+@Table(name = "user")
+public class User implements Serializable {
 
-    @Id
-    private String id;
-    @Indexed(unique = true, direction = IndexDirection.DESCENDING, dropDups = true)
-    private String email;
-    private String password;
-    private String token;
-    private String fullname;
-    private boolean enabled;
+	private static final long serialVersionUID = 1L;
 
-    //Dbref facilitates the input of roles by using only ID
-    @DBRef
-    private Set<Role> roles= new HashSet<>();
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "id")
+	private Integer id;
 
-    //Getter and Setters
-    public String getToken() {
-        return token;
-    }
-    public void setToken(String token) {
-        this.token = token;
-    }
-    public String getId() {
-        return id;
-    }
-    public void setId(String id) {
-        this.id = id;
-    }
-    public String getEmail() {
-        return email;
-    }
-    public void setEmail(String email) {
-        this.email = email;
-    }
-    public String getPassword() {
-        return password;
-    }
-    public void setPassword(String password) {
-        this.password = password;
-    }
-    public String getFullname() {
-        return fullname;
-    }
-    public void setFullname(String fullname) {
-        this.fullname = fullname;
-    }
-    public boolean isEnabled() {
-        return enabled;
-    }
-    public void setEnabled(boolean enabled) {
-        this.enabled = enabled;
-    }
-    public Set<Role> getRoles() {
-        return roles;
-    }
-    public void setRoles(Set<Role> roles) {
-        this.roles = roles;
-    }
+	@Column(name = "name")
+	private String name;
 
-    //Default Constructor
-    public User() {
-		super();
-	}
+	@Column(name = "contactNumber")
+	private String contactNumber;
 
-    @Override
-    public String toString() {
-        return "User{" +
-                "id='" + id + '\'' +
-                ", email='" + email + '\'' +
-                ", password='" + password + '\'' +
-                ", fullname='" + fullname + '\'' +
-                ", enabled=" + enabled +
-                ", roles=" + roles +
-                '}';
-    }
+	@Column(name = "email")
+	private String email;
+
+	@Column(name = "password")
+	private String password;
+
+	@Column(name = "status")
+	private String status;
+
+	@Column(name = "role")
+	private String role;
+
 }

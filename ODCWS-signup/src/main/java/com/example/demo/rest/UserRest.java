@@ -20,10 +20,13 @@ public interface UserRest {
 		@PostMapping("/login")
 		public ResponseEntity<String> login(@RequestBody(required=true) Map<String,String> requestMap);
 		
-		@GetMapping("/get")
+		@GetMapping("/getAllUsers")
 		public ResponseEntity<List<UserWrapper>> getAllUser();
 		
-		@PostMapping("/update")
+		@GetMapping("/getAllWashers")
+		public ResponseEntity<List<UserWrapper>> getAllWashers();
+		
+		@PostMapping("/updateStatus")
 		public ResponseEntity<String> update(@RequestBody Map<String,String> requestMap);
 		
 		@GetMapping("/checkToken")

@@ -58,25 +58,26 @@ public class UserService {
 	public String cancelOrder(OrderDetails orderDetails) {
 		HttpHeaders headers = new HttpHeaders();
 		headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
+		OrderDetails od=  restTemplate.getForObject(url2 + "/findone/"+orderDetails.getOrderId(), OrderDetails.class);
 		HttpEntity<OrderDetails> cancelledOrder = new HttpEntity<>(orderDetails, headers);
-		if(orderDetails.getStatus()=="Pending") {
+		if(od.getStatus().equals("Pending") || od.getStatus().equals("Confirmed(In Progress)") ) {
 			ResponseEntity<String> response = restTemplate.exchange(url2 + "/cancelOrder", HttpMethod.PUT, cancelledOrder,
 					String.class);
 			return response.getBody();
 			
 		}else {
-			return "Order Completed...can not be cancelled";
+			return "Order Completed/Cancelled...can not be cancelled";
 		}
 	}
 
 	// To get the receipt of the order after order is completed
 	public OrderReceipt getReceipt(String id) throws Exception {
 		OrderDetails od = restTemplate.getForObject(url2 + "/findone/" + id, OrderDetails.class);
-		WashPacks wp = restTemplate.getForObject(url1 + "/washPackByName/" + od.getWashpack(), WashPacks.class);
-		if (od.getStatus()=="Completed") {
-			return new OrderReceipt(id,od.getUseremailid(), wp.getName(), wp.getDescription(), wp.getCost());
+		if (od.getStatus().equals("Completed")) {
+			WashPacks wp = restTemplate.getForObject(url1 + "/washPackByName/" + od.getWashpack(), WashPacks.class);
+			return new OrderReceipt(id,od.getUseremailid(),od.getWasherName(),od.getCars().getCarCount(), wp.getName(), wp.getDescription(), wp.getCost());
 		} else {
-			throw new API_ExceptionHandler("Your order with ID -> " + id + " is still pending...Reciet genration after completion");
+			throw new API_ExceptionHandler("Your order with ID -> " + id + " is still pending...Reciept generation after completion");
 		}
 //		return new OrderReceipt(id,"test","testt","test",1233);
 		

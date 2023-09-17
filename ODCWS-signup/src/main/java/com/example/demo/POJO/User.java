@@ -3,6 +3,7 @@ package com.example.demo.POJO;
 import java.io.Serializable;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
@@ -11,6 +12,7 @@ import lombok.Data;
 
 //@NamedQuery(name="User.findByEmailId",query="select u from User u where u.email:email")
 @NamedQuery(name = "User.getAllUser", query = "select new com.example.demo.wrapper.UserWrapper(u.id,u.name,u.email,u.contactNumber,u.status) from User u where u.role='user'")
+@NamedQuery(name = "User.getAllWashers", query = "select new com.example.demo.wrapper.UserWrapper(u.id,u.name,u.email,u.contactNumber,u.status) from User u where u.role='washer'")
 @NamedQuery(name="User.updateStatus", query="update User u set u.status=:status where u.id=:id")
 @NamedQuery(name = "User.getAllAdmin", query = "select u.email from User u where u.role='admin'")
 
@@ -46,6 +48,7 @@ public class User implements Serializable {
 	private String status;
 
 	@Column(name = "role")
+	@NotBlank(message="role is reuquired")
 	private String role;
 
 }

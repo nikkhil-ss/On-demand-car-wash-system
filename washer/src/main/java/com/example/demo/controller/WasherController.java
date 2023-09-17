@@ -25,6 +25,12 @@ public class WasherController {
     public List<OrderDetails> getPendingOrders(){
         return washerService.getPendingOrders();
     }
+    
+    @PutMapping("/assign")
+    public OrderDetails assignSelf(@RequestBody OrderDetails orderDetails){
+        return washerService.assignSelf(orderDetails);
+    }
+    
     @GetMapping("/findCompleted")
     public List<OrderDetails> getCompletedOrders(){
         return washerService.getCompleteOrders();

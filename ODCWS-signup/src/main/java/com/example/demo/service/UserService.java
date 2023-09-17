@@ -23,4 +23,6 @@ public interface UserService {
 
 	ResponseEntity<String> forgotPassword(Map<String, String> requestMap);
 
+	ResponseEntity<List<UserWrapper>> getAllWashers();
+
 }

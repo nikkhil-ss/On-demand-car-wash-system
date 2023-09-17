@@ -53,6 +53,17 @@ public class WasherService {
 	         OrderDetails od = restTemplate.exchange(updateUrl, HttpMethod.PUT,updatedOrder,OrderDetails.class).getBody();
 	         return od;
 	     }
+	     
+	     // if any order is not assigned with any washer then washer can Assign himself;
+	     public OrderDetails assignSelf(OrderDetails orderDetails){
+	         HttpHeaders headers = new HttpHeaders();
+	         headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
+	         HttpEntity<OrderDetails> assignedWasher = new HttpEntity<>(orderDetails,headers);
+	         OrderDetails od = restTemplate.exchange(url2+"/assignWasher", HttpMethod.PUT,assignedWasher,OrderDetails.class).getBody();
+	         return od;
+	     }
+	     
+	     
 	    
 	 	
 }

@@ -82,9 +82,8 @@ public class UserRestImpl implements UserRest {
 	public ResponseEntity<String> changePassword(Map<String, String> requestMap) {
 		try {
 			return userService.changePassword(requestMap);
-					
-		}
-		catch(Exception e) {
+
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return CarWashUtils.getResponseEntity(CarWashConstants.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
@@ -94,10 +93,22 @@ public class UserRestImpl implements UserRest {
 	public ResponseEntity<String> forgotPassword(Map<String, String> requestMap) {
 		try {
 			return userService.forgotPassword(requestMap);
-		}
-		catch(Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return CarWashUtils.getResponseEntity(CarWashConstants.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
+	}
+
+	@Override
+	public ResponseEntity<List<UserWrapper>> getAllWashers() {
+		// TODO Auto-generated method stub
+		try {
+			return userService.getAllWashers();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return new ResponseEntity<List<UserWrapper>>(new ArrayList<>(), HttpStatus.INTERNAL_SERVER_ERROR);
+
 	}
 }

@@ -20,12 +20,13 @@ public class OrderDetails {
 	String useremailid;
 	@NotEmpty(message = "Wash pack can't be empty")
 	String washpack;
+	String washerName;
 	@NotEmpty(message = "Phone can't be empty")
 	long phoneNo;
 	Boolean pickUp;
 	String pickupAddress;
-	@NotEmpty(message = "status can't be empty")
+	
 	String status;
-	@NotEmpty(message = "car field can't be empty")
+	
 	Car cars;
 }

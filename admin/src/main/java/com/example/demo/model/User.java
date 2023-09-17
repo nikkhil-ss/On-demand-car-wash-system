@@ -4,8 +4,7 @@ import java.io.Serializable;
 
 import javax.persistence.*;
 
-import org.hibernate.annotations.DynamicInsert;
-import org.hibernate.annotations.DynamicUpdate;
+
 
 import lombok.Data;
 
@@ -18,8 +17,7 @@ import lombok.Data;
 
 @Data
 @Entity
-@DynamicInsert
-@DynamicUpdate
+
 @Table(name = "user")
 public class User implements Serializable {
 

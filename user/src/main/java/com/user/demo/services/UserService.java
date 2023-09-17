@@ -75,11 +75,11 @@ public class UserService {
 		OrderDetails od = restTemplate.getForObject(url2 + "/findone/" + id, OrderDetails.class);
 		if (od.getStatus().equals("Completed")) {
 			WashPacks wp = restTemplate.getForObject(url1 + "/washPackByName/" + od.getWashpack(), WashPacks.class);
-			return new OrderReceipt(id,od.getUseremailid(),od.getWasherName(),od.getCars().getCarCount(), wp.getName(), wp.getDescription(), wp.getCost());
+//			return new OrderReceipt(id,od.getUseremailid(),od.getWasherName(),od.getCars().getCarCount(), wp.getName(), wp.getDescription(), wp.getCost());
 		} else {
 			throw new API_ExceptionHandler("Your order with ID -> " + id + " is still pending...Reciept generation after completion");
 		}
-//		return new OrderReceipt(id,"test","testt","test",1233);
+		return new OrderReceipt();
 		
 	}
 }

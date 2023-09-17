@@ -15,9 +15,7 @@ import lombok.ToString;
 @ToString
 public class Car {
     
-   
 	int carCount;
-    
 
    
 }

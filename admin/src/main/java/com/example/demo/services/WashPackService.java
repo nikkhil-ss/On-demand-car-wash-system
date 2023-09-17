@@ -16,41 +16,41 @@ import com.example.demo.repository.WashPackRepository;
 public class WashPackService {
 
     @Autowired
-    private WashPackRepository wr;
+    private WashPackRepository washPackRepo;
 
     //To add a WashPack
     public WashPacks addWP(WashPacks washPacks){
-        return wr.save(washPacks);
+        return washPackRepo.save(washPacks);
     }
     //To find all washpacks
     public List<WashPacks> findallWP(){
-        return wr.findAll();
+        return washPackRepo.findAll();
     }
     //To find one WashPack
     public ResponseEntity<WashPacks> findoneWP(String id) throws API_requestException {
-        WashPacks wp=wr.findById(id).orElseThrow(() ->  new API_requestException("Washpack with ID -> "+id+" not found"));
+        WashPacks wp=washPackRepo.findById(id).orElseThrow(() ->  new API_requestException("Washpack with ID -> "+id+" not found"));
         return ResponseEntity.ok(wp);
     }
     //To find washpack with washpack name for user's reciept
     public WashPacks findbyname(String name){
-        return wr.findAll().stream().filter(x -> x.getName().contains(name)).findFirst().get();
+        return washPackRepo.findAll().stream().filter(x -> x.getName().contains(name)).findFirst().get();
     }
     //To delete a WashPack
     public ResponseEntity<Map<String,Boolean>> deleteWP(String id){
-        WashPacks wp=wr.findById(id).orElseThrow(() ->  new API_requestException("Washpack with ID -> "+id+" not found, deletion failed"));
-        wr.delete(wp);
+        WashPacks wp=washPackRepo.findById(id).orElseThrow(() ->  new API_requestException("Washpack with ID -> "+id+" not found, deletion failed"));
+        washPackRepo.delete(wp);
         Map<String, Boolean> response = new HashMap<>();
         response.put("Washpack Deleted", Boolean.TRUE);
         return ResponseEntity.ok(response);
     }
     //To update a WashPack
     public ResponseEntity<WashPacks> updateWP(String id,WashPacks washPacks) {
-        WashPacks existingWashPack = wr.findById(id).orElseThrow(() -> new API_requestException("Washpack with ID -> " + id + " not found, updating failed"));
+        WashPacks existingWashPack = washPackRepo.findById(id).orElseThrow(() -> new API_requestException("Washpack with ID -> " + id + " not found, updating failed"));
         //ID won't be updated ever
         existingWashPack.setName(washPacks.getName());
         existingWashPack.setCost(washPacks.getCost());
         existingWashPack.setDescription(washPacks.getDescription());
-        WashPacks response=wr.save(existingWashPack);
+        WashPacks response=washPackRepo.save(existingWashPack);
         return ResponseEntity.ok(response);
     }
 }

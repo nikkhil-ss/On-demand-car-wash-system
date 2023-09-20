@@ -1,0 +1,27 @@
+server:
+    port: 8086
+
+spring:
+    cloud:
+      gateway:
+         routes:
+         - id: admin-service
+           uri: lb://ADMIN-SERVICE
+           predicates:
+            - Path=/admins/**
+         - id: security-service
+           uri: lb://ZUUL-SECURITY
+           predicates:
+            - Path=/api/auth/**
+         - id: order-service
+           uri: lb://ORDERS-SERVICE
+           predicates:
+            - Path=/orders/**
+         - id: washers-service
+           uri: lb://WASHER-SERVICE
+           predicates:
+            - Path=/washers/**
+         - id: users-service
+           uri: lb://USERS-SERVICE
+           predicates:
+            - Path=/users/**

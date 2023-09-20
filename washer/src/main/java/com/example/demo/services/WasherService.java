@@ -28,7 +28,7 @@ public class WasherService {
 	     /** Only the methods that use rest template are below this comment **/
 	     //To see all the WashPacks
 	     public List<WashPacks> getAllWashPacks(){
-	         WashPacks[] wp=restTemplate.getForObject(url1+"/findallWP",WashPacks[].class);
+	         WashPacks[] wp=restTemplate.getForObject(url1+"/findAllWashPack",WashPacks[].class);
 	         return (Arrays.asList(wp));
 	     }
 	     //To see the pending orders

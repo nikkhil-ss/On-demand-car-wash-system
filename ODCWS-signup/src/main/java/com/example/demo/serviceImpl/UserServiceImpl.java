@@ -90,7 +90,12 @@ public class UserServiceImpl implements UserService {
 		user.setEmail(requestMap.get("email"));
 		user.setPassword(requestMap.get("password"));
 		user.setStatus("true");
-		user.setRole("USER");
+		if(requestMap.get("role")==null) {
+			user.setRole("USER");			
+		}
+		else {
+			user.setRole(requestMap.get("role"));
+		}
 
 		return user;
 

@@ -47,12 +47,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
-		http
-		.logout((logout) -> logout.logoutUrl("/api/auth/logout"));
 		http.cors().configurationSource(request -> new CorsConfiguration().applyPermitDefaultValues())
 		.and()
 		.csrf().disable()
-		.authorizeRequests().antMatchers("/api/auth/login", "/api/auth/register", "/api/auth/forgotPassword", "/api/auth/logout").permitAll()
+		.authorizeRequests().antMatchers("/api/auth/login", "/api/auth/register", "/api/auth/forgotPassword").permitAll()
 		.antMatchers(HttpMethod.OPTIONS, "/**").permitAll()
         .antMatchers("/users/**").hasAuthority("user")
         .antMatchers("/admins/**").hasAuthority("admin")
@@ -61,7 +59,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         .anyRequest().authenticated().and().csrf().disable()
 				.exceptionHandling().and().sessionManagement()
 				.sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-		
 
 		http.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
 	}

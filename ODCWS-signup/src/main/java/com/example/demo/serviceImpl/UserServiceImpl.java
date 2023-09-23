@@ -110,7 +110,9 @@ public class UserServiceImpl implements UserService {
 			String token = "{\"token\":\""
 					+ jwtUtil.generateToken(customerUserdetailsService.getUserDetail().getEmail(),
 							customerUserdetailsService.getUserDetail().getRole())
-					+ "\"}";
+					+"\",\"role\":\""
+			                + customerUserdetailsService.getUserDetail().getRole()
+			                +"\"}";
 			if (auth.isAuthenticated()) {
 				if (customerUserdetailsService.getUserDetail().getStatus().equalsIgnoreCase("true")) {
 					emailUtils.userLogin(requestMap.get("email"), "Account Logged In");

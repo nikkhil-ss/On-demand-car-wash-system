@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import com.example.demo.wrapper.UserWrapper;
 
 @RequestMapping(path="/api/auth")
-@CrossOrigin(origins = "*")
+
 public interface UserRest {
 	
 		@PostMapping("/register")

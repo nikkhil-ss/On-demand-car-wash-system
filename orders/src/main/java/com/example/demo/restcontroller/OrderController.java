@@ -125,8 +125,16 @@ public class OrderController {
 	// To find all the pending orders
 	@GetMapping("/findPending")
 	public List<OrderDetails> getPendingOrders() {
-		return orderRepo.findAll().stream().filter(order -> order.getStatus().contains("Pending"))
+		List<OrderDetails> pendingList= orderRepo.findAll().stream().filter(order -> order.getStatus().contains("Pending"))
 				.collect(Collectors.toList());
+		List<OrderDetails> filteredOrders = orderRepo.findAll()
+			    .stream()
+			    .filter(order -> order.getStatus().contains("Confirmed(In Progress)"))
+			    .collect(Collectors.toList());
+		
+		pendingList.addAll(filteredOrders);
+		return pendingList;
+		
 	}
 
 	// To cancel the order
@@ -159,6 +167,10 @@ public class OrderController {
 	public ResponseEntity<?> confirmOrder(@PathVariable String orderId) throws API_requestException {
 		OrderDetails existingOrder = orderRepo.findById(orderId).orElseThrow(
 				() -> new API_requestException("Order with ID -> " + orderId + " not found,update failed"));
+		if(existingOrder.getWasherName()=="NA") {
+			throw new API_requestException("Washer Should be assigned to confirm the order");
+		}
+		
 		if(existingOrder.getStatus().equals("Completed") || existingOrder.getStatus().equals("Confirmed(In Progress)") ) {
 			return ResponseEntity.ok("Order Already Completed/Confirmed");
 //			throw new API_requestException("Order Already Completed/Confirmed");

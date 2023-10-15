@@ -73,13 +73,13 @@ public class UserService {
 	// To get the receipt of the order after order is completed
 	public OrderReceipt getReceipt(String id) throws Exception {
 		OrderDetails od = restTemplate.getForObject(url2 + "/findone/" + id, OrderDetails.class);
-		if (od.getStatus().equals("Completed")) {
+		if (od.getStatus()!=null) {
 			WashPacks wp = restTemplate.getForObject(url1 + "/washPackByName/" + od.getWashpack(), WashPacks.class);
-//			return new OrderReceipt(id,od.getUseremailid(),od.getWasherName(),od.getCars().getCarCount(), wp.getName(), wp.getDescription(), wp.getCost());
+			return new OrderReceipt(id,od.getUseremailid(),od.getWasherName(),od.getCars().getCarCount(),od.getStatus() ,wp.getName(), wp.getDescription(), wp.getCost());
 		} else {
 			throw new API_ExceptionHandler("Your order with ID -> " + id + " is still pending...Reciept generation after completion");
 		}
-		return new OrderReceipt();
+//		return new OrderReceipt();
 		
 	}
 }

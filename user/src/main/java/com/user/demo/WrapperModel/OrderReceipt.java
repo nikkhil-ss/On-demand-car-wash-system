@@ -13,6 +13,7 @@ public class OrderReceipt {
 	    private String customerEmail;
 	    private String washerName;
 	    private int noOfCarsWashed;
+	    private String status;
 	    private String washPackName;
 	    private String washPackDetails;
 	    private int washPackPrice;

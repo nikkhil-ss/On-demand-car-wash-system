@@ -107,7 +107,7 @@ public class EmailUtils {
 		helper.setFrom("nikhil7singh02@gmail.com");
 		helper.setTo(to);
 		helper.setSubject(subject);
-		String htmlMsg = "<p><b>Your Login details for Cafe Management System</b><br>" + "<b>Email: </b>" + to + "<br>"
+		String htmlMsg = "<p><b>Your Login details for Car Wash Management System</b><br>" + "<b>Email: </b>" + to + "<br>"
 				+ "<b>Password: </b>" + password + "<br>"
 				+ "<a href=\"http://localhost:8081/api/auth/login\">Click here to login</a></p>";
 		message.setContent(htmlMsg, "text/html");
